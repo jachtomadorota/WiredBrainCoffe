@@ -18,27 +18,27 @@ public class ProductController {
     }
 
     @GetMapping
-    public Flux<Product> getAllProducts(){
+    public Flux<Product> getAllProducts() {
         return repository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<Product>> getOneProduct(@PathVariable String id){
+    public Mono<ResponseEntity<Product>> getOneProduct(@PathVariable String id) {
         return repository.findById(id)
                 .map(product -> ResponseEntity.ok(product));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Product> saveProduct(@RequestBody Product product){
+    public Mono<Product> saveProduct(@RequestBody Product product) {
         return repository.save(product);
     }
 
     @PutMapping("/{id}")
     public Mono<ResponseEntity<Product>> updateProduct(@PathVariable(value = "id") String id,
-                                                       @RequestBody Product product){
+                                                       @RequestBody Product product) {
         return repository.findById(id)
-                .flatMap(existingProduct ->{
+                .flatMap(existingProduct -> {
                     existingProduct.setPrice(product.getPrice());
                     existingProduct.setName(product.getName());
                     return repository.save(existingProduct);
@@ -48,12 +48,18 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public Mono<ResponseEntity<Void>> deleteProduct(@PathVariable(value = "id") String id){
+    public Mono<ResponseEntity<Void>> deleteProduct(@PathVariable(value = "id") String id) {
         return repository.findById(id)
                 .flatMap(existingProduct ->
                         repository.delete(existingProduct)
-                .then(Mono.just(ResponseEntity.ok().<Void>build())));
+                                .then(Mono.just(ResponseEntity.ok().<Void>build()))
+                                .defaultIfEmpty(ResponseEntity.notFound().build())
+                );
     }
 
+    @DeleteMapping
+    public Mono<Void> deleteAllProducts() {
+        return repository.deleteAll();
+    }
 
 }
