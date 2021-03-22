@@ -1,11 +1,10 @@
-package repository;
+package com.dorotajachtoma.wiredbraincoffee;
 
-import model.Product;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.stereotype.Repository;
 
 
-@Configuration
+@Repository
 public interface ProductRepository extends ReactiveMongoRepository <Product,String> {
 
 }

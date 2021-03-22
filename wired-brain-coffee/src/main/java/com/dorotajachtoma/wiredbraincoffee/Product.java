@@ -1,22 +1,20 @@
-package model;
+package com.dorotajachtoma.wiredbraincoffee;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Product {
 
     @Id
     @Setter
     @Getter
-    private Long id;
+    private String id;
 
     @Getter
     @Setter
